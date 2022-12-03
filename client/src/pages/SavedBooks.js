@@ -1,16 +1,19 @@
 import React from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery,  } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
 import { DELETE_BOOK } from '../utils/mutations';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-
-  const userData = useQuery(QUERY_ME);
-  const [deleteBook] = useMutation(DELETE_BOOK)
+  let userData = useQuery(QUERY_ME);
+  const [deleteBook] = useMutation(DELETE_BOOK, {
+    refetchQueries: () => [{
+      query: QUERY_ME
+    }]
+  });
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -36,7 +39,7 @@ const SavedBooks = () => {
   };
 
   // if data isn't here yet, say so
-  if (!userData) {
+  if (userData.loading) {
     return <h2>LOADING...</h2>;
   }
 
@@ -49,12 +52,12 @@ const SavedBooks = () => {
       </Jumbotron>
       <Container>
         <h2>
-          {userData.savedBooks.length
-            ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
+          {userData.data.me.savedBooks.length
+            ? `Viewing ${userData.data.me.savedBooks.length} saved ${userData.data.me.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
         <CardColumns>
-          {userData.savedBooks.map((book) => {
+          {userData.data.me.savedBooks.map((book) => {
             return (
               <Card key={book.bookId} border='dark'>
                 {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}

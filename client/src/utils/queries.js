@@ -6,8 +6,7 @@ export const QUERY_ME = gql`
       _id
       username
       email
-      saveBooks {
-        _id
+      savedBooks {
         authors
         description
         bookId
@@ -18,4 +17,3 @@ export const QUERY_ME = gql`
     }
   }
 `;
-
