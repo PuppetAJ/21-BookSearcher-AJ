@@ -9,6 +9,7 @@ import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
   let userData = useQuery(QUERY_ME);
+  // mutation with refetch queries so that when the mutation is called we update the page state
   const [deleteBook] = useMutation(DELETE_BOOK, {
     refetchQueries: () => [{
       query: QUERY_ME

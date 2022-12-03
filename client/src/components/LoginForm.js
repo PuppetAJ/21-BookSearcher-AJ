@@ -7,16 +7,19 @@ import { useMutation } from '@apollo/client';
 import Auth from '../utils/auth';
 
 const LoginForm = () => {
+  // useMutation and useState declarations
   const [loginUser] = useMutation(LOGIN_USER);
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
+  // Form input change function
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
 
+  // Form submit function 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -48,7 +51,8 @@ const LoginForm = () => {
       password: '',
     });
   };
-
+  
+  // JSX
   return (
     <>
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
@@ -91,4 +95,5 @@ const LoginForm = () => {
   );
 };
 
+// Export component
 export default LoginForm;

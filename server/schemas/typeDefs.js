@@ -1,7 +1,8 @@
+// Imports
 const { gql } = require('apollo-server-express');
 
+// Initialize type definitions
 const typeDefs = gql`
-
   type Book {
     authors: [String]
     description: String
@@ -35,4 +36,5 @@ const typeDefs = gql`
   }
 `;
 
+// Export type definitions
 module.exports = typeDefs;
